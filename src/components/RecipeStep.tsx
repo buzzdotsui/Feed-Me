@@ -3,10 +3,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, Check, Timer } from 'lucide-react';
-import { RecipeStep } from '@/lib/mockAI';
+import type { RecipeStep as RecipeStepType } from '@/lib/mockAI';
 
 interface Props {
-  step: RecipeStep;
+  step: RecipeStepType;
   stepNumber: number;
   totalSteps: number;
   isActive: boolean;

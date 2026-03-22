@@ -11,7 +11,12 @@ const font = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   title: 'Feed Me — What\'s in your fridge?',
   description: 'AI-powered cooking assistant. Tell us what\'s in your fridge, get 3 perfect recipes in seconds.',
-  viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
