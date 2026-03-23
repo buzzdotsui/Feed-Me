@@ -13,9 +13,9 @@ interface Props {
 }
 
 const CARD_COLORS = [
-  { bg: '#FFF4EC', accent: '#FF6B35', badge: '#FFE4D3' },
-  { bg: '#F0FDF4', accent: '#16A34A', badge: '#DCFCE7' },
-  { bg: '#EFF6FF', accent: '#2563EB', badge: '#DBEAFE' },
+  { bgClass: 'bg-white/5 border-white/10', glowColor: 'rgba(255, 107, 0, 0.5)', accent: '#FF6B00', badgeClass: 'bg-neon-orange/20 text-orange-200 border border-neon-orange/30' },
+  { bgClass: 'bg-white/5 border-white/10', glowColor: 'rgba(0, 232, 143, 0.5)', accent: '#00E88F', badgeClass: 'bg-neon-emerald/20 text-emerald-200 border border-neon-emerald/30' },
+  { bgClass: 'bg-white/5 border-white/10', glowColor: 'rgba(0, 184, 255, 0.5)', accent: '#00B8FF', badgeClass: 'bg-neon-blue/20 text-blue-200 border border-neon-blue/30' },
 ];
 
 export default function RecipeCard({ result, index, onSelect }: Props) {
@@ -31,78 +31,86 @@ export default function RecipeCard({ result, index, onSelect }: Props) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.12, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-      className="flex-shrink-0 w-[78vw] max-w-[300px] rounded-3xl p-5 cursor-pointer relative"
-      style={{ backgroundColor: colors.bg, boxShadow: '0 4px 24px rgba(0,0,0,0.08)' }}
+      initial={{ opacity: 0, y: 40, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ delay: index * 0.12, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      className={`flex-shrink-0 w-[80vw] max-w-[320px] rounded-[2rem] p-6 cursor-pointer relative backdrop-blur-2xl border shadow-[0_20px_40px_rgba(0,0,0,0.4)] ${colors.bgClass} overflow-hidden group`}
       onClick={() => onSelect(recipe.id)}
-      whileTap={{ scale: 0.97 }}
+      whileTap={{ scale: 0.96 }}
+      whileHover={{ y: -8, boxShadow: `0 30px 60px ${colors.glowColor}` }}
     >
+      {/* Ambient Glow */}
+      <div 
+        className="absolute top-0 right-0 w-32 h-32 rounded-full blur-[60px] opacity-30 pointer-events-none transition-opacity group-hover:opacity-50"
+        style={{ backgroundColor: colors.accent }}
+      />
+
       {/* Favorite */}
       <button
         onClick={handleFav}
-        className="absolute top-4 right-4 w-9 h-9 rounded-full flex items-center justify-center"
-        style={{ backgroundColor: faved ? '#FFE4D3' : '#F3EDE6' }}
+        className="absolute top-5 right-5 w-10 h-10 rounded-full flex items-center justify-center bg-white/10 backdrop-blur-xl border border-white/20 hover:bg-white/20 transition-colors shadow-lg z-20"
         aria-label="Toggle favorite"
       >
         <Heart
-          size={18}
+          size={20}
           fill={faved ? colors.accent : 'none'}
-          stroke={faved ? colors.accent : '#9B8B78'}
+          stroke={faved ? colors.accent : '#e4e4e7'}
         />
       </button>
 
       {/* Emoji illustration */}
       <div
-        className="w-16 h-16 rounded-2xl flex items-center justify-center text-4xl mb-4"
-        style={{ backgroundColor: colors.badge }}
+        className={`w-20 h-20 rounded-[1.5rem] flex items-center justify-center text-5xl mb-5 shadow-inner backdrop-blur-md relative z-10 ${colors.badgeClass}`}
       >
-        {recipe.emoji}
+        <span className="drop-shadow-lg">{recipe.emoji}</span>
       </div>
 
       {/* Name */}
-      <h3 className="font-bold text-lg text-stone-900 leading-tight pr-8 mb-2">
+      <h3 className="font-extrabold text-2xl text-white leading-tight pr-10 mb-3 drop-shadow-md relative z-10">
         {recipe.name}
       </h3>
 
       {/* Description */}
-      <p className="text-sm text-stone-500 leading-snug mb-4 line-clamp-2">
+      <p className="text-sm text-zinc-300 leading-relaxed mb-5 line-clamp-2 font-medium relative z-10">
         {recipe.description}
       </p>
 
       {/* Meta row */}
-      <div className="flex items-center gap-3 mb-4">
-        <div className="flex items-center gap-1.5 text-stone-600">
-          <Clock size={14} />
-          <span className="text-sm font-medium">{recipe.time} min</span>
+      <div className="flex items-center gap-3 mb-5 relative z-10">
+        <div className="flex items-center gap-1.5 text-zinc-200 bg-white/10 px-3 py-1.5 rounded-full backdrop-blur-md border border-white/5">
+          <Clock size={16} />
+          <span className="text-sm font-semibold tracking-wide">{recipe.time} min</span>
         </div>
         <div
-          className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold"
-          style={{ backgroundColor: colors.badge, color: colors.accent }}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-bold tracking-wide backdrop-blur-md ${colors.badgeClass}`}
         >
-          {matchScore}% match
+          <span className="text-lg leading-none pt-0.5">✨</span> {matchScore}% match
         </div>
       </div>
 
       {/* Missing ingredient warning */}
       {missingIngredients.length > 0 && substitutions.length > 0 && (
-        <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 mb-4">
-          <p className="text-xs text-amber-700 font-medium">
-            💡 {substitutions[0].advice}
+        <div className="bg-neon-amber/10 border border-neon-amber/20 rounded-2xl p-4 mb-5 backdrop-blur-md shadow-inner relative z-10">
+          <p className="text-xs text-amber-100 font-semibold leading-relaxed">
+            <span className="drop-shadow inline-block mr-1">💡</span> {substitutions[0].advice}
           </p>
         </div>
       )}
 
       {/* CTA */}
       <div
-        className="flex items-center justify-between px-4 py-3 rounded-2xl"
-        style={{ backgroundColor: colors.badge }}
+        className={`flex items-center justify-between px-5 py-4 rounded-2xl border transition-all duration-300 group-hover:brightness-110 relative z-10 ${colors.badgeClass}`}
+        style={{ borderColor: `${colors.accent}40` }}
       >
-        <span className="text-sm font-bold" style={{ color: colors.accent }}>
+        <span className="text-base font-bold tracking-wide">
           Start cooking
         </span>
-        <ChevronRight size={16} color={colors.accent} />
+        <motion.div
+           animate={{ x: [0, 4, 0] }}
+           transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+        >
+          <ChevronRight size={20} />
+        </motion.div>
       </div>
     </motion.div>
   );

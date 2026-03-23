@@ -10,6 +10,22 @@
 
 html, body {
   overscroll-behavior: none;
+  background-color: #050505; /* Deep, almost absolute black for true dark mode */
+  color: #fafafa;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(255, 107, 0, 0.05), transparent 25%),
+    radial-gradient(circle at 85% 30%, rgba(0, 232, 143, 0.05), transparent 25%);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .scrollbar-none {
@@ -34,4 +50,12 @@ html, body {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+.glass-panel {
+  @apply bg-light-glass backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.3)];
+}
+
+.neon-text-glow {
+  text-shadow: 0 0 20px currentColor;
 }

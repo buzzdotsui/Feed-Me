@@ -41,49 +41,52 @@ export default function HomePage() {
 
       {/* Hero headline */}
       <motion.div
-        initial={{ opacity: 0, y: -16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="mb-6"
+        initial={{ opacity: 0, y: -20, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        className="mb-8 mt-2 relative z-10 px-4"
       >
-        <p className="text-sm font-semibold text-orange-400 mb-1 tracking-wide uppercase">
+        <p className="text-xs font-bold text-neon-orange mb-3 tracking-[0.2em] uppercase drop-shadow-md">
           AI Kitchen Assistant
         </p>
-        <h1 className="text-3xl font-extrabold text-stone-900 leading-tight">
+        <h1 className="text-5xl font-black text-white leading-[1.1] tracking-tighter drop-shadow-lg">
           What's in your<br />
-          <span className="text-orange-500">fridge? 🧊</span>
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF6B00] via-[#FFB800] to-[#00E88F] flex items-center gap-2 animate-pulse-slow">
+            fridge? <span className="text-4xl drop-shadow-lg">🧊</span>
+          </span>
         </h1>
-        <p className="text-stone-500 text-sm mt-2">
-          Tap what you have. We'll find you something delicious.
+        <p className="text-zinc-400 text-sm mt-4 font-medium max-w-[280px] leading-relaxed">
+          Tap what you have. We'll find something delicious.
         </p>
       </motion.div>
 
       {/* Pantry staples notice */}
       {pantry.length > 0 && (
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="mb-4 px-3 py-2 bg-amber-50 border border-amber-200 rounded-2xl flex items-center gap-2"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="mb-6 mx-4 px-4 py-3 bg-neon-amber/10 border border-neon-amber/20 backdrop-blur-xl rounded-2xl flex items-center gap-3 shadow-[0_4px_20px_rgba(255,184,0,0.15)]"
         >
-          <span className="text-sm">🧂</span>
-          <span className="text-xs text-amber-700 font-medium">
-            Salt, pepper, oil & more already included from your pantry
+          <span className="text-xl drop-shadow-md">🧂</span>
+          <span className="text-xs text-amber-100/90 font-semibold tracking-wide leading-snug">
+            Salt, pepper, oil & more included from pantry
           </span>
         </motion.div>
       )}
 
       {/* Ingredient grid */}
-      <div className="mb-6">
-        <h2 className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-3">
+      <div className="mb-8 relative z-10 px-4">
+        <h2 className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.15em] mb-4 pl-1">
           Ingredient Wall
         </h2>
-        <div className="grid grid-cols-5 gap-2.5">
+        <div className="grid grid-cols-4 gap-3">
           {INGREDIENTS.map((ingredient, i) => (
             <motion.div
               key={ingredient.id}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: i * 0.04, duration: 0.35 }}
+              initial={{ opacity: 0, scale: 0.8, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ delay: i * 0.03, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             >
               <IngredientCard
                 ingredient={ingredient}
@@ -99,21 +102,21 @@ export default function HomePage() {
       {/* Selected count */}
       {selected.length > 0 && (
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="mb-4 text-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-6 text-center sticky bottom-[104px] z-30 pointer-events-none"
         >
-          <span className="inline-flex items-center gap-1.5 text-sm font-semibold px-3 py-1.5 rounded-full"
-            style={{ backgroundColor: '#FFE4D3', color: '#C2410C' }}>
-            {selected.map(id => INGREDIENTS.find(i => i.id === id)?.emoji).join(' ')}
-            <span className="ml-1">{selected.length} ingredient{selected.length !== 1 ? 's' : ''} selected</span>
+          <span className="inline-flex items-center gap-2 text-sm font-bold px-5 py-2.5 rounded-full backdrop-blur-2xl border border-neon-orange/40 shadow-[0_8px_32px_rgba(255,107,0,0.4)] text-orange-50 bg-[#050505]/80 pointer-events-auto">
+            <span className="flex gap-1 drop-shadow">{selected.map(id => INGREDIENTS.find(i => i.id === id)?.emoji).slice(0, 3)}</span>
+            {selected.length > 3 && <span className="opacity-70 text-xs">+{selected.length - 3}</span>}
+            <span className="ml-1 opacity-90">{selected.length} selected</span>
           </span>
         </motion.div>
       )}
 
       {/* Mood selector */}
-      <div className="mb-6">
-        <h2 className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-3">
+      <div className="mb-[120px] relative z-10">
+        <h2 className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.15em] mb-4 px-5">
           What's your mood?
         </h2>
         <MoodChips moods={MOODS} selected={mood} onSelect={setMood} />

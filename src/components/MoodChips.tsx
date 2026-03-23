@@ -24,26 +24,32 @@ export default function MoodChips({ moods, selected, onSelect }: Props) {
           <motion.button
             key={mood.id}
             onClick={() => onSelect(mood.id)}
-            whileTap={{ scale: 0.94 }}
-            className="snap-start flex-shrink-0 flex flex-col items-center px-4 py-3 rounded-2xl border-2 min-w-[110px] focus:outline-none transition-colors"
-            style={{
-              backgroundColor: isSelected ? '#FF6B35' : '#F9F5EE',
-              borderColor: isSelected ? '#E85A24' : '#E5DDD0',
-            }}
+            whileTap={{ scale: 0.92 }}
+            className={`relative overflow-hidden snap-start flex-shrink-0 flex items-center gap-3 px-5 py-3 rounded-full border min-w-[130px] focus:outline-none transition-all duration-300 backdrop-blur-xl ${isSelected ? 'bg-gradient-to-r from-neon-orange/90 to-neon-amber/90 border-neon-amber/50 shadow-[0_4px_20px_rgba(255,107,0,0.4)]' : 'bg-white/5 border-white/10 hover:bg-white/10 shadow-[0_4px_10px_rgba(0,0,0,0.2)]'}`}
           >
-            <span className="text-2xl mb-1">{mood.emoji}</span>
-            <span
-              className="text-xs font-bold leading-tight text-center"
-              style={{ color: isSelected ? '#fff' : '#1A1208' }}
-            >
-              {mood.label}
-            </span>
-            <span
-              className="text-[10px] leading-tight text-center mt-0.5"
-              style={{ color: isSelected ? '#FFD4C2' : '#9B8B78' }}
-            >
-              {mood.description}
-            </span>
+            <span className="text-2xl z-10 relative drop-shadow-md">{mood.emoji}</span>
+            <div className="flex flex-col items-start z-10 relative">
+              <span
+                className={`text-sm font-extrabold tracking-wide leading-tight ${isSelected ? 'text-white drop-shadow-md' : 'text-zinc-200'}`}
+              >
+                {mood.label}
+              </span>
+              <span
+                className={`text-[10px] uppercase tracking-wider font-semibold leading-tight mt-0.5 ${isSelected ? 'text-orange-100/90' : 'text-zinc-500'}`}
+              >
+                {mood.description}
+              </span>
+            </div>
+            
+            {/* Shimmer effect for selected */}
+            {isSelected && (
+              <motion.div
+                className="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-12"
+                initial={{ x: '-150%' }}
+                animate={{ x: '200%' }}
+                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+              />
+            )}
           </motion.button>
         );
       })}

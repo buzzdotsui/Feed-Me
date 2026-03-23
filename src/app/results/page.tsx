@@ -46,21 +46,22 @@ export default function ResultsPage() {
     return (
       <div className="flex flex-col min-h-screen">
         <NavBar title="Hmm…" />
-        <div className="flex flex-col items-center justify-center flex-1 gap-4 px-4 text-center">
-          <span className="text-6xl">🤔</span>
-          <h2 className="text-xl font-bold text-stone-900">
+        <div className="flex flex-col items-center justify-center flex-1 gap-5 px-6 text-center">
+          <span className="text-7xl drop-shadow-xl mb-2">🤔</span>
+          <h2 className="text-3xl font-black text-white tracking-tight drop-shadow-md">
             The fridge is a mystery
           </h2>
-          <p className="text-stone-500 text-sm">
+          <p className="text-zinc-400 text-sm leading-relaxed max-w-[280px]">
             We couldn't find recipes for those ingredients. Try selecting more, or switch moods!
           </p>
           <motion.button
             onClick={() => router.back()}
-            whileTap={{ scale: 0.95 }}
-            className="px-6 py-3 rounded-2xl font-bold text-white mt-2"
-            style={{ background: 'linear-gradient(135deg, #FF6B35, #E85A24)' }}
+            whileTap={{ scale: 0.94 }}
+            className="px-8 py-4 rounded-2xl font-black text-white mt-4 backdrop-blur-md relative overflow-hidden group shadow-[0_8px_24px_rgba(255,107,0,0.3)]"
+            style={{ background: 'linear-gradient(135deg, #FF6B00, #FFB800)' }}
           >
-            Try again
+            <span className="relative z-10">Try again</span>
+            <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
           </motion.button>
         </div>
       </div>
@@ -76,14 +77,18 @@ export default function ResultsPage() {
 
       {/* Header */}
       <motion.div
-        initial={{ opacity: 0, y: -12 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="mb-6"
+        initial={{ opacity: 0, y: -16, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        className="mb-8 mt-2 relative z-10 px-4"
       >
-        <h1 className="text-2xl font-extrabold text-stone-900 mb-1">
-          We found {results.length} recipes!
+        <h1 className="text-4xl font-black text-white mb-2 tracking-tighter leading-[1.1] drop-shadow-md">
+          We found <br/>
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-orange via-neon-amber to-neon-emerald animate-pulse-slow inline-block mt-1">
+            {results.length} recipes!
+          </span>
         </h1>
-        <p className="text-stone-500 text-sm">
+        <p className="text-zinc-400 text-sm font-semibold tracking-wide">
           Swipe to browse · Tap to start cooking
         </p>
       </motion.div>
@@ -91,38 +96,38 @@ export default function ResultsPage() {
       {/* Swipeable card row */}
       <div
         ref={scrollRef}
-        className="flex gap-4 overflow-x-auto pb-4 -mx-4 px-4 scrollbar-none snap-x"
+        className="flex gap-5 overflow-x-auto pb-8 -mx-4 px-4 scrollbar-none snap-x snap-mandatory"
       >
         {results.map((result, i) => (
-          <RecipeCard
-            key={result.recipe.id}
-            result={result}
-            index={i}
-            onSelect={handleSelect}
-          />
+          <div key={result.recipe.id} className="snap-center">
+            <RecipeCard
+              result={result}
+              index={i}
+              onSelect={handleSelect}
+            />
+          </div>
         ))}
       </div>
 
       {/* Swipe hint */}
       <motion.p
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.8 }}
-        className="text-center text-xs text-stone-400 mt-3 mb-6"
+        animate={{ opacity: 0.6 }}
+        transition={{ delay: 1, duration: 1 }}
+        className="text-center text-[10px] font-bold tracking-[0.2em] uppercase text-zinc-500 mt-2 mb-8 relative z-10"
       >
         ← Swipe for more options →
       </motion.p>
 
       {/* What you're working with */}
-      <div className="mt-2 p-4 rounded-2xl" style={{ backgroundColor: '#F0EAE0' }}>
-        <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-2">
+      <div className="mt-auto mx-4 mb-6 p-5 rounded-3xl glass-panel relative z-10">
+        <p className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.15em] mb-4">
           What you're working with
         </p>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2.5">
           {[...selectedIngredients, ...pantry].map((id) => {
-            const allIngredients = [...(RECIPES.flatMap(r => [...r.requiredIngredients, ...r.optionalIngredients]))];
             return (
-              <span key={id} className="text-xs font-medium px-2.5 py-1 rounded-full bg-white text-stone-700 border border-stone-200">
+              <span key={id} className="text-xs font-bold px-3 py-1.5 rounded-xl bg-white/5 text-zinc-300 border border-white/10 shadow-[0_2px_8px_rgba(0,0,0,0.2)]">
                 {id.replace(/_/g, ' ')}
               </span>
             );

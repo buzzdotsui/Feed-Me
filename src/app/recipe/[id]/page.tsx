@@ -59,8 +59,8 @@ export default function RecipePage() {
   if (!recipe) {
     return (
       <div className="flex flex-col min-h-screen">
-        <NavBar title="Recipe" />
-        <div className="flex items-center justify-center flex-1 text-stone-400 text-lg">
+        <NavBar title="Recipe Detail" />
+        <div className="flex items-center justify-center flex-1 text-zinc-500 font-bold text-lg">
           Recipe not found 😕
         </div>
       </div>
@@ -68,61 +68,68 @@ export default function RecipePage() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen pb-8">
+    <div className="flex flex-col min-h-screen pb-10 px-4">
       <NavBar title="Step-by-step" />
 
       {/* Recipe header */}
-      <div className="mb-6">
-        <div className="flex items-start justify-between gap-3 mb-3">
-          <div className="flex items-center gap-3">
-            <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl"
-              style={{ backgroundColor: '#FFF4EC' }}>
-              {recipe.emoji}
+      <div className="mb-8 mt-2">
+        <div className="flex items-start justify-between gap-4 mb-4">
+          <div className="flex items-center gap-4">
+            <div className="w-16 h-16 rounded-[1.5rem] flex items-center justify-center text-4xl glass-panel relative">
+              <div className="absolute inset-0 bg-neon-orange/10 rounded-[1.5rem]" />
+              <span className="relative z-10 drop-shadow-md">{recipe.emoji}</span>
             </div>
             <div>
-              <h1 className="text-xl font-extrabold text-stone-900 leading-tight">{recipe.name}</h1>
-              <p className="text-sm text-stone-500 mt-0.5">⏱ {recipe.time} minutes</p>
+              <h1 className="text-2xl font-black text-white leading-tight drop-shadow-md">{recipe.name}</h1>
+              <div className="flex items-center gap-1.5 mt-1 text-zinc-400">
+                <span className="text-xs">⏱</span>
+                <p className="text-xs font-semibold tracking-wide">{recipe.time} min</p>
+              </div>
             </div>
           </div>
           <motion.button
             onClick={handleFav}
             whileTap={{ scale: 0.85 }}
-            className="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0"
-            style={{ backgroundColor: faved ? '#FFE4D3' : '#F0EAE0' }}
+            className={`w-12 h-12 rounded-[1.2rem] flex items-center justify-center flex-shrink-0 transition-all shadow-lg ${faved ? 'bg-neon-orange/20 border border-neon-orange/30' : 'bg-white/5 border border-white/10 hover:bg-white/10'}`}
             aria-label="Toggle favorite"
           >
-            <Heart size={20} fill={faved ? '#FF6B35' : 'none'} stroke={faved ? '#FF6B35' : '#9B8B78'} />
+            <Heart size={22} fill={faved ? '#FF6B00' : 'none'} stroke={faved ? '#FF6B00' : '#a1a1aa'} />
           </motion.button>
         </div>
 
-        <p className="text-sm text-stone-500 leading-relaxed">{recipe.description}</p>
+        <p className="text-sm font-medium text-zinc-400 leading-relaxed max-w-[320px]">{recipe.description}</p>
 
         {/* Progress bar */}
-        <div className="mt-4 h-2 rounded-full overflow-hidden" style={{ backgroundColor: '#E5DDD0' }}>
-          <motion.div
-            className="h-full rounded-full"
-            style={{ background: 'linear-gradient(90deg, #FF6B35, #FFB347)' }}
-            animate={{ width: `${(completedSteps.length / recipe.steps.length) * 100}%` }}
-            transition={{ duration: 0.5 }}
-          />
+        <div className="mt-6 mb-2">
+          <div className="h-2 rounded-full overflow-hidden bg-white/5 border border-white/5">
+            <motion.div
+              className="h-full rounded-full relative"
+              style={{ background: 'linear-gradient(90deg, #FF6B00, #FFB800)' }}
+              animate={{ width: `${(completedSteps.length / recipe.steps.length) * 100}%` }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <div className="absolute inset-0 bg-white/20 blur-[2px]" />
+            </motion.div>
+          </div>
+          <p className="text-[10px] font-bold tracking-widest uppercase text-zinc-500 mt-2 flex justify-between">
+            <span>Progress</span>
+            <span className="text-neon-amber">{completedSteps.length} / {recipe.steps.length}</span>
+          </p>
         </div>
-        <p className="text-xs text-stone-400 mt-1.5">
-          {completedSteps.length} of {recipe.steps.length} steps complete
-        </p>
       </div>
 
       {/* Substitution banner */}
       {substitution && (
         <motion.div
-          initial={{ opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-4 p-4 rounded-2xl border border-amber-200"
-          style={{ backgroundColor: '#FFFBEB' }}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="mb-6 p-5 rounded-2xl border border-neon-amber/20 bg-neon-amber/5 relative overflow-hidden backdrop-blur-md"
         >
-          <p className="text-sm font-bold text-amber-800 mb-1">
-            💡 Quick sub tip
+          <div className="absolute top-0 right-0 w-32 h-32 bg-neon-amber/10 blur-[40px] rounded-full pointer-events-none" />
+          <p className="text-xs font-black tracking-widest text-amber-500 uppercase mb-2 flex items-center gap-2">
+            <span className="text-lg">💡</span> Swap Idea
           </p>
-          <p className="text-sm text-amber-700">
+          <p className="text-sm font-medium text-amber-100/90 leading-relaxed relative z-10">
             {substitution.advice}
           </p>
         </motion.div>
@@ -132,30 +139,31 @@ export default function RecipePage() {
       <AnimatePresence>
         {finished && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.85 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="mb-6 p-6 rounded-3xl text-center"
-            style={{ background: 'linear-gradient(135deg, #FFF4EC, #FFE4D3)' }}
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            className="mb-8 p-8 rounded-[2rem] text-center border border-white/10 shadow-[0_20px_40px_rgba(0,0,0,0.5)] relative overflow-hidden backdrop-blur-2xl"
+            style={{ background: 'linear-gradient(135deg, rgba(255,107,0,0.1), rgba(255,184,0,0.1))' }}
           >
+            <div className="absolute inset-0 block pointer-events-none" style={{ background: 'radial-gradient(circle at top right, rgba(255,107,0,0.2) 0%, transparent 60%)' }} />
             <motion.div
               animate={{ rotate: [0, -10, 10, -10, 10, 0], scale: [1, 1.2, 1] }}
-              transition={{ duration: 0.8 }}
-              className="text-6xl mb-3"
+              transition={{ duration: 1, ease: 'easeInOut' }}
+              className="text-7xl mb-6 relative z-10 drop-shadow-xl"
             >
               🎉
             </motion.div>
-            <h2 className="text-xl font-extrabold text-stone-900 mb-2">You did it!</h2>
-            <p className="text-stone-600 text-sm mb-4">
-              {recipe.name} is ready. We hope it's absolutely delicious.
+            <h2 className="text-3xl font-black text-white mb-3 tracking-tight relative z-10">Nailed it!</h2>
+            <p className="text-zinc-300 text-sm font-medium leading-relaxed mb-6 relative z-10">
+              Your <span className="text-neon-amber font-bold">{recipe.name}</span> is ready. Bon appétit!
             </p>
-            <Trophy size={20} className="mx-auto mb-3 text-amber-500" />
+            <Trophy size={32} className="mx-auto mb-6 text-neon-amber drop-shadow-[0_0_15px_rgba(255,184,0,0.6)] relative z-10" />
             <motion.button
               onClick={() => router.push('/')}
-              whileTap={{ scale: 0.95 }}
-              className="px-6 py-3 rounded-2xl font-bold text-white"
-              style={{ background: 'linear-gradient(135deg, #FF6B35, #E85A24)' }}
+              whileTap={{ scale: 0.94 }}
+              className="w-full px-6 py-4 rounded-2xl font-black text-lg text-[#050505] relative z-10 shadow-[0_4px_20px_rgba(255,184,0,0.3)]"
+              style={{ background: 'linear-gradient(135deg, #FFB800, #FF6B00)' }}
             >
-              Cook something else 🍽️
+              Cook something else Wait
             </motion.button>
           </motion.div>
         )}

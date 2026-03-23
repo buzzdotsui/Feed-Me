@@ -10,43 +10,44 @@ interface Props {
 
 export default function FeedMeButton({ onPress, disabled, selectedCount }: Props) {
   return (
-    <div className="fixed bottom-0 left-0 right-0 flex justify-center px-4 pb-6 pt-3 z-40"
-      style={{ background: 'linear-gradient(to top, #FDFAF5 70%, transparent)' }}>
+    <div className="fixed bottom-0 left-0 right-0 flex justify-center px-4 pb-8 pt-6 z-40 bg-gradient-to-t from-[#050505] via-[#050505]/90 to-transparent">
       <motion.button
         onClick={onPress}
         disabled={disabled}
-        className="w-full max-w-sm h-16 rounded-2xl font-bold text-xl text-white focus:outline-none relative overflow-hidden"
+        className="w-full max-w-sm h-16 rounded-2xl font-black tracking-wide text-xl text-white focus:outline-none relative overflow-hidden backdrop-blur-md"
         style={{
           background: disabled
-            ? 'linear-gradient(135deg, #D1C5B5, #B8AD9E)'
-            : 'linear-gradient(135deg, #FF6B35 0%, #FF8C5A 50%, #E85A24 100%)',
-          boxShadow: disabled ? 'none' : '0 8px 32px rgba(255, 107, 53, 0.45)',
+            ? 'rgba(255, 255, 255, 0.03)'
+            : 'linear-gradient(135deg, #FF6B00 0%, #FFB800 100%)',
+          boxShadow: disabled ? '0 4px 20px rgba(0,0,0,0.5)' : '0 0 30px rgba(255,107,0,0.6), inset 0 2px 2px rgba(255,255,255,0.3)',
+          border: disabled ? '1px solid rgba(255,255,255,0.05)' : '1px solid rgba(255,255,255,0.2)',
         }}
         animate={!disabled ? {
           boxShadow: [
-            '0 8px 24px rgba(255,107,53,0.35)',
-            '0 12px 40px rgba(255,107,53,0.55)',
-            '0 8px 24px rgba(255,107,53,0.35)',
+            '0 10px 30px rgba(255,107,0,0.4)',
+            '0 15px 50px rgba(255,184,0,0.6)',
+            '0 10px 30px rgba(255,107,0,0.4)',
           ],
         } : {}}
-        transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
-        whileTap={!disabled ? { scale: 0.96, boxShadow: '0 2px 8px rgba(255,107,53,0.3)' } : {}}
-        whileHover={!disabled ? { scale: 1.02 } : {}}
+        transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+        whileTap={!disabled ? { scale: 0.94, boxShadow: '0 2px 10px rgba(255,107,0,0.4)' } : {}}
+        whileHover={!disabled ? { scale: 1.03 } : {}}
         aria-label="Feed Me"
       >
-        <span className="relative z-10 flex items-center justify-center gap-2">
-          <span className="text-2xl">🍽️</span>
-          {disabled ? 'Pick some ingredients first' : 'Feed Me'}
+        <span className="relative z-10 flex items-center justify-center gap-2 drop-shadow-md">
+          <span className="text-2xl pt-0.5">🍽️</span>
+          {disabled ? 'Pick some ingredients' : 'Feed Me!'}
         </span>
         {/* Shine overlay */}
         {!disabled && (
           <motion.div
-            className="absolute top-0 left-0 w-20 h-full pointer-events-none"
+            className="absolute top-0 left-0 w-24 h-full pointer-events-none"
             style={{
-              background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent)',
+              background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)',
+              transform: 'skewX(-20deg)',
             }}
-            animate={{ x: ['-80px', '420px'] }}
-            transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut', repeatDelay: 1 }}
+            animate={{ x: ['-100px', '450px'] }}
+            transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut', repeatDelay: 1.5 }}
           />
         )}
       </motion.button>

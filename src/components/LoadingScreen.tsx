@@ -34,7 +34,7 @@ export default function LoadingScreen() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.4 }}
-            className="text-lg font-semibold text-amber-800"
+            className="text-lg font-bold text-orange-400 drop-shadow-md"
           >
             {LOADING_MESSAGES[msgIndex]}
           </motion.p>
