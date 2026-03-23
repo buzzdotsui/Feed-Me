@@ -8,7 +8,7 @@ import RecipeCard from '@/components/RecipeCard';
 import LoadingScreen from '@/components/LoadingScreen';
 import { generateRecipes, AIResult } from '@/lib/mockAI';
 import { getSelections, getPantryStaples } from '@/lib/storage';
-import { RECIPES } from '@/lib/recipes';
+
 
 export default function ResultsPage() {
   const router = useRouter();

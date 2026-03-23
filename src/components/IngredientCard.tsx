@@ -1,19 +1,49 @@
 'use client';
 
+import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Ingredient } from '@/lib/ingredients';
+import type { Ingredient } from '@/lib/ingredients';
 
-interface Props {
+/**
+ * Displays a single ingredient card with emoji and name
+ * Shows selection state with glow effects and animations
+ * 
+ * @component
+ * @example
+ * ```tsx
+ * <IngredientCard
+ *   ingredient={egg}
+ *   selected={true}
+ *   isStaple={false}
+ *   onToggle={handleToggle}
+ * />
+ * ```
+ */
+interface IngredientCardProps {
+  /** The ingredient to display */
   ingredient: Ingredient;
+  /** Whether the ingredient is currently selected */
   selected: boolean;
+  /** Whether this is a pantry staple ingredient */
   isStaple?: boolean;
+  /** Callback fired when ingredient is toggled */
   onToggle: (id: string) => void;
 }
 
-export default function IngredientCard({ ingredient, selected, isStaple, onToggle }: Props) {
+const IngredientCard: React.FC<IngredientCardProps> = ({
+  ingredient,
+  selected,
+  isStaple,
+  onToggle,
+}): React.ReactElement => {
+  const handleToggle = (): void => {
+    onToggle(ingredient.id);
+  };
+
   return (
     <motion.button
-      onClick={() => onToggle(ingredient.id)}
+      onClick={handleToggle}
+      type="button"
       className={`relative flex flex-col items-center justify-center aspect-square rounded-[2rem] cursor-pointer select-none border transition-all duration-300 focus:outline-none backdrop-blur-xl ${selected ? 'bg-gradient-to-br from-white/10 to-white/5 border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.4)]' : 'bg-white/[0.02] border-white/[0.05] hover:bg-white/[0.08] hover:border-white/10 shadow-[0_4px_16px_rgba(0,0,0,0.2)]'}`}
       whileTap={{ scale: 0.88 }}
       whileHover={!selected ? { y: -4, scale: 1.02 } : {}}
@@ -30,7 +60,7 @@ export default function IngredientCard({ ingredient, selected, isStaple, onToggl
       }
       transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
       aria-pressed={selected}
-      aria-label={ingredient.name}
+      aria-label={`Select ${ingredient.name}`}
     >
       <motion.span
         className="text-[2.5rem] mb-2 leading-none drop-shadow-xl z-10 relative"
@@ -80,4 +110,6 @@ export default function IngredientCard({ ingredient, selected, isStaple, onToggl
       </AnimatePresence>
     </motion.button>
   );
-}
+};
+
+export default IngredientCard;

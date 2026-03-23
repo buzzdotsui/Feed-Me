@@ -1,21 +1,35 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 
+/**
+ * Optimized font loading with font-display: swap for better performance
+ * Preloads only used font weights to minimize CLS
+ */
 const font = Inter({
   subsets: ['latin'],
   display: 'swap',
+  weight: ['400', '600', '700', '900'],
+  preload: true,
 });
 
+/**
+ * SEO Metadata configuration
+ */
 export const metadata: Metadata = {
   title: 'Feed Me — What\'s in your fridge?',
   description: 'AI-powered cooking assistant. Tell us what\'s in your fridge, get 3 perfect recipes in seconds.',
 };
 
-export const viewport = {
+/**
+ * Viewport configuration for mobile optimization
+ */
+export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
+  userScalable: false,
+  themeColor: '#FF6B00',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

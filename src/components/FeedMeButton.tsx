@@ -8,7 +8,7 @@ interface Props {
   selectedCount: number;
 }
 
-export default function FeedMeButton({ onPress, disabled, selectedCount }: Props) {
+export default function FeedMeButton({ onPress, disabled, selectedCount: _selectedCount }: Props) {
   return (
     <div className="fixed bottom-0 left-0 right-0 flex justify-center px-4 pb-8 pt-6 z-40 bg-gradient-to-t from-[#050505] via-[#050505]/90 to-transparent">
       <motion.button
