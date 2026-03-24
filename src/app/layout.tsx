@@ -42,7 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="absolute top-[20%] right-[-20%] w-[60%] h-[60%] bg-amber-500/10 rounded-full blur-[120px] mix-blend-screen animate-blob animation-delay-2000" />
           <div className="absolute bottom-[-20%] left-[20%] w-[60%] h-[60%] bg-orange-600/10 rounded-full blur-[120px] mix-blend-screen animate-blob animation-delay-4000" />
         </div>
-        
+
         {/* Main interactive area */}
         <div className="relative z-10 h-dvh max-w-md mx-auto flex flex-col overflow-y-auto overflow-x-hidden scrollbar-none">
           {children}
